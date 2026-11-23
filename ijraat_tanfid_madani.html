@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>اجراءات التنفيذ المدني - دراسة منظمة وخطاطات تفاعلية</title>
+<style>
+  :root {
+    --bg-main: #0f141c;
+    --bg-card: #171f2c;
+    --bg-card-alt: #1e2838;
+    --bg-input: #111824;
+    --text-main: #eef2f7;
+    --text-muted: #a6b4c8;
+    --accent: #3b82f6;
+    --accent-soft: rgba(59, 130, 246, 0.14);
+    --accent-2: #10b981;
+    --accent-2-soft: rgba(16, 185, 129, 0.14);
+    --warn: #f59e0b;
+    --warn-soft: rgba(245, 158, 11, 0.14);
+    --danger: #ef4444;
+    --danger-soft: rgba(239, 68, 68, 0.14);
+    --border: #2a364b;
+    --radius: 14px;
+    --shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    font-family: "Segoe UI", Tahoma, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.85;
+    padding: 24px 16px 64px;
+  }
+
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  header.hero {
+    background: linear-gradient(135deg, #182232 0%, #111824 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px 28px;
+    margin-bottom: 28px;
+    box-shadow: var(--shadow);
+  }
+
+  .badge {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: #93c5fd;
+    border: 1px solid rgba(59, 130, 246, 0.35);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  header.hero h1 {
+    font-size: 32px;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    color: #ffffff;
+  }
+
+  header.hero p.lead {
+    color: var(--text-muted);
+    font-size: 18px;
+    max-width: 880px;
+  }
+
+  .quick-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 22px;
+  }
+
+  .quick-nav a {
+    text-decoration: none;
+    color: var(--text-main);
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+  }
+
+  .quick-nav a:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: #ffffff;
+  }
+
+  section.module {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px 26px;
+    margin-bottom: 26px;
+    box-shadow: var(--shadow);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+  }
+
+  .section-header h2 {
+    font-size: 25px;
+    color: #ffffff;
+  }
+
+  .section-tag {
+    font-size: 14px;
+    color: #6ee7b7;
+    background: var(--accent-2-soft);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    padding: 4px 12px;
+    border-radius: 8px;
+  }
+
+  h3.sub-title {
+    font-size: 21px;
+    color: #93c5fd;
+    margin: 22px 0 12px;
+  }
+
+  p {
+    margin-bottom: 14px;
+  }
+
+  ul.clean-list {
+    list-style: none;
+    margin: 12px 0 18px;
+  }
+
+  ul.clean-list li {
+    position: relative;
+    padding-right: 24px;
+    margin-bottom: 10px;
+  }
+
+  ul.clean-list li::before {
+    content: "▪";
+    position: absolute;
+    right: 4px;
+    top: 0;
+    color: var(--accent);
+    font-size: 18px;
+  }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 18px;
+    margin: 16px 0;
+  }
+
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+
+  .info-box {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-right: 4px solid var(--accent);
+    border-radius: 12px;
+    padding: 18px 20px;
+  }
+
+  .info-box.green {
+    border-right-color: var(--accent-2);
+  }
+
+  .info-box.amber {
+    border-right-color: var(--warn);
+  }
+
+  .info-box h4 {
+    font-size: 19px;
+    margin-bottom: 8px;
+    color: #ffffff;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px 0 22px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: right;
+    font-size: 17px;
+  }
+
+  th, td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  th {
+    background: #121925;
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  tr:nth-child(even) td {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  tr:last-child td {
+    border-bottom: none;
+  }
+
+  .diagram-card {
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 18px 0 22px;
+  }
+
+  .diagram-title {
+    font-size: 18px;
+    font-weight: 700;
+    color: #93c5fd;
+    margin-bottom: 14px;
+    text-align: center;
+  }
+
+  .diagram-caption {
+    font-size: 15px;
+    color: var(--text-muted);
+    margin-top: 12px;
+    text-align: center;
+  }
+
+  svg.flow-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* Quiz styles */
+  .quiz-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 20px;
+  }
+
+  .score-box {
+    font-size: 18px;
+    font-weight: 700;
+    color: #6ee7b7;
+  }
+
+  .btn {
+    background: var(--accent);
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    font-size: 17px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.15s ease;
+  }
+
+  .btn:hover {
+    opacity: 0.92;
+  }
+
+  .btn:active {
+    transform: scale(0.99);
+  }
+
+  .btn.secondary {
+    background: #273449;
+    border: 1px solid var(--border);
+  }
+
+  .question-card {
+    background: var(--bg-card-alt);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 18px;
+  }
+
+  .q-num {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 700;
+    color: #93c5fd;
+    background: var(--accent-soft);
+    padding: 3px 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+  }
+
+  .q-text {
+    font-size: 19px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 14px;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .option-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg-input);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 15px;
+    cursor: pointer;
+    font-size: 17px;
+    transition: border-color 0.2s ease, background 0.2s ease;
+  }
+
+  .option-label:hover {
+    border-color: var(--accent);
+  }
+
+  .option-label input[type="radio"] {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+
+  .feedback {
+    margin-top: 12px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 16px;
+    display: none;
+  }
+
+  .feedback.correct {
+    display: block;
+    background: var(--accent-2-soft);
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    color: #a7f3d0;
+  }
+
+  .feedback.wrong {
+    display: block;
+    background: var(--danger-soft);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #fecaca;
+  }
+
+  .summary-banner {
+    display: none;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.16), rgba(59, 130, 246, 0.16));
+    border: 1px solid rgba(16, 185, 129, 0.45);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 16px;
+    font-size: 19px;
+    color: #ffffff;
+  }
+
+  @media (max-width: 640px) {
+    body {
+      font-size: 17px;
+    }
+    header.hero h1 {
+      font-size: 25px;
+    }
+    .section-header h2 {
+      font-size: 21px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="hero">
+    <span class="badge">ملف دراسي تفاعلي • مادة المسطرة المدنية</span>
+    <h1>اجراءات التنفيذ المدني: المفاهيم، المتدخلون، السند التنفيذي وانواع الحجوز</h1>
+    <p class="lead">
+      عرض دراسي منظم ومراجع لاهم احكام التنفيذ المدني في التشريع المغربي (القسم التاسع من قانون المسطرة المدنية من المادة 437 الى المادة 598 والنصوص المرتبطة به)، مع خطاطات توضيحية واختبار تفاعلي للتقييم الذاتي.
+    </p>
+    <nav class="quick-nav">
+      <a href="#sec-intro">المفاهيم والاطار القانوني</a>
+      <a href="#sec-actors">الجهات وقاضي التنفيذ والاطراف</a>
+      <a href="#sec-title-steps">السند التنفيذي ومقدمات التنفيذ</a>
+      <a href="#sec-methods">طرق التنفيذ وانواع الحجوز</a>
+      <a href="#sec-quiz">الاختبار التفاعلي</a>
+    </nav>
+  </header>
+
+  <!-- القسم الاول -->
+  <section id="sec-intro" class="module">
+    <div class="section-header">
+      <h2>اولا: تقديم اولي، الاطار القانوني وصور التنفيذ</h2>
+      <span class="section-tag">المحور 1</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="info-box">
+        <h4>مفهوم التنفيذ</h4>
+        <p>
+          في المعنى العام، يمثل التنفيذ اخراج الفكرة او الحق من دائرة التصور النظري الى حيز الواقع الفعلي، وبالمعنى القانوني يعني الوفاء بالالتزام عينا او بما يقابله مما يرتضيه الدائن او يعتبره القانون عوضا عنه.
+        </p>
+      </div>
+      <div class="info-box green">
+        <h4>مفهوم التنفيذ الجبري</h4>
+        <p>
+          هو التنفيذ الذي تجريه السلطة العامة تحت اشراف القضاء ورقابته بناء على طلب دائن بيده سند مستوف لشروط خاصة، بقصد استيفاء حقه الثابت في السند من المدين جبرا عنه.
+        </p>
+      </div>
+    </div>
+
+    <h3 class="sub-title">الاطار القانوني والنصوص المرتبطة</h3>
+    <p>
+      ينظم المشرع طرق التنفيذ اساسا في <strong>القسم التاسع من قانون المسطرة المدنية (من المادة 437 الى المادة 598)</strong>، الى جانب نصوص خاصة مكملة حسب طبيعة الحق او المال محل التنفيذ.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>الباب او النص القانوني</th>
+            <th>نطاق المواد او المرجع</th>
+            <th>المضمون الاساسي</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>الباب الاول: ايداع وقبول الكفالة الشخصية والنقدية</td>
+            <td>المواد 437 الى 439 (ق.م.م)</td>
+            <td>تنظيم الضمانات والكفالات المرتبطة بالتنفيذ</td>
+          </tr>
+          <tr>
+            <td>الباب الثاني: تقديم الحسابات</td>
+            <td>المواد 440 الى 448 (ق.م.م)</td>
+            <td>قواعد حصر وتقديم الحسابات في اطار التنفيذ</td>
+          </tr>
+          <tr>
+            <td>الباب الثالث: القواعد العامة بشأن التنفيذ الجبري للاحكام</td>
+            <td>المواد 449 الى 497 (ق.م.م)</td>
+            <td>شروط السندات، الاختصاص، مقدمات التنفيذ وطرق التنفيذ الجبري</td>
+          </tr>
+          <tr>
+            <td>الباب الرابع: حجز المنقولات والعقارات</td>
+            <td>المواد 496 الى 571 (ق.م.م)</td>
+            <td>الحجز التحفظي، الحجز التنفيذي على المنقول والعقار والبيع بالمزاد</td>
+          </tr>
+          <tr>
+            <td>الباب الخامس: الحجز لدى الغير</td>
+            <td>المواد 572 الى 583 (ق.م.م)</td>
+            <td>حجز ما للمدين لدى الغير من مبالغ وسندات</td>
+          </tr>
+          <tr>
+            <td>الباب السادس: الحجز الارتهاني</td>
+            <td>المواد 584 الى 586 (ق.م.م)</td>
+            <td>حجز المنقولات المثقلة بامتياز او رهن او حق ارتهان</td>
+          </tr>
+          <tr>
+            <td>الباب السابع: الحجز الاستحقاقي</td>
+            <td>المواد 587 الى 590 (ق.م.م)</td>
+            <td>استرداد منقول مملوك لطالب الحجز موجود في حيازة الغير</td>
+          </tr>
+          <tr>
+            <td>الباب الثامن: توزيع حصيلة التنفيذ</td>
+            <td>المواد 591 الى 598 (ق.م.م)</td>
+            <td>توزيع المبالغ المتحصلة من التنفيذ بين الدائنين عند التزاحم</td>
+          </tr>
+          <tr>
+            <td>نصوص قانونية اخرى مرتبطة</td>
+            <td>ق.ل.ع، مدونة التجارة، مدونة الحقوق العينية، مرسوم 17 دجنبر 1968، كفالة الاطفال المهملين، الحالة المدنية</td>
+            <td>تطبيقات واحكام خاصة تكميلية في المعاملات والاموال والاحوال</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">خطاطة 1: مقارنة بين التنفيذ الاختياري والتنفيذ الجبري</div>
+      <svg class="flow-svg" viewBox="0 0 920 260" xmlns="http://www.w3.org/2000/svg">
+        <rect x="310" y="12" width="300" height="46" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+        <text x="460" y="41" fill="#ffffff" font-size="18" font-weight="bold" text-anchor="middle">صور التنفيذ في القانون</text>
+
+        <line x1="460" y1="58" x2="460" y2="82" stroke="#64748b" stroke-width="2"/>
+        <line x1="220" y1="82" x2="700" y2="82" stroke="#64748b" stroke-width="2"/>
+        <line x1="220" y1="82" x2="220" y2="105" stroke="#10b981" stroke-width="2"/>
+        <line x1="700" y1="82" x2="700" y2="105" stroke="#f59e0b" stroke-width="2"/>
+
+        <!-- الفرع الايمن: التنفيذ الاختياري -->
+        <rect x="520" y="105" width="360" height="140" rx="12" fill="#13221c" stroke="#10b981" stroke-width="2"/>
+        <text x="700" y="133" fill="#6ee7b7" font-size="17" font-weight="bold" text-anchor="middle">التنفيذ الاختياري (الطوعي)</text>
+        <text x="860" y="162" fill="#e2e8f0" font-size="15" text-anchor="end">• وفاء المدين بالتزامه طوعا دون اجبار</text>
+        <text x="860" y="188" fill="#e2e8f0" font-size="15" text-anchor="end">• فوائده: اختصار الوقت والنفقات</text>
+        <text x="860" y="214" fill="#e2e8f0" font-size="15" text-anchor="end">• لا يخضع لاجراءات رسمية وينظمه ق.ل.ع</text>
+
+        <!-- الفرع الايسر: التنفيذ الجبري -->
+        <rect x="40" y="105" width="360" height="140" rx="12" fill="#241b10" stroke="#f59e0b" stroke-width="2"/>
+        <text x="220" y="133" fill="#fcd34d" font-size="17" font-weight="bold" text-anchor="middle">التنفيذ الجبري (تحت اشراف القضاء)</text>
+        <text x="380" y="162" fill="#e2e8f0" font-size="15" text-anchor="end">• تجريه السلطة العامة بناء على سند مستوف للشروط</text>
+        <text x="380" y="188" fill="#e2e8f0" font-size="15" text-anchor="end">• مباشر (عيني): تسليم شيء او القيام/الامتناع عن عمل</text>
+        <text x="380" y="214" fill="#e2e8f0" font-size="15" text-anchor="end">• غير مباشر (الحجز): حجز وبيع اموال المدين</text>
+      </svg>
+      <div class="diagram-caption">يتميز التنفيذ الجبري بتدخل السلطة العامة ورقابة القضاء عند امتناع المدين عن الوفاء الاختياري.</div>
+    </div>
+  </section>
+
+  <!-- القسم الثاني -->
+  <section id="sec-actors" class="module">
+    <div class="section-header">
+      <h2>ثانيا: الجهات المكلفة بالتنفيذ، قاضي التنفيذ واطرافه</h2>
+      <span class="section-tag">المحور 2</span>
+    </div>
+
+    <h3 class="sub-title">الجهات المكلفة بمباشرة التنفيذ المدني (المادة 476 ق.م.م والمادة 334 ق.م.م)</h3>
+    <p>
+      يتم التنفيذ بواسطة <strong>كتابة الضبط</strong> او بواسطة <strong>المفوضين القضائيين</strong>، ويحق لصاحب المصلحة عرض الامر على قاضي التنفيذ في حال امتناع المكلف بالتنفيذ عن القيام باي اجراء من اجراءاته.
+    </p>
+
+    <div class="grid-3">
+      <div class="info-box">
+        <h4>كتاب الضبط</h4>
+        <ul class="clean-list">
+          <li>يمثلون السلطة العامة المباشرة للتنفيذ تحت اشراف القضاء ورقابته.</li>
+          <li>موظفون عموميون يخضعون للمسؤولية المهنية، السر المهني، وانعدام المصلحة الخاصة.</li>
+          <li>يتمتعون بالحماية القانونية (الفصلان 263 و267 من القانون الجنائي).</li>
+          <li>محاضرهم رسمية لا يطعن فيها الا بالزور.</li>
+        </ul>
+      </div>
+      <div class="info-box green">
+        <h4>المفوضون القضائيون</h4>
+        <ul class="clean-list">
+          <li>مهنة حرة من مساعدي القضاء ينظمها القانون رقم 46.21 الصادر بتنفيذه الظهير الشريف رقم 1.25.49 (6 يونيو 2025، حيز التنفيذ 15 شتنبر 2025).</li>
+          <li>تحدد المادة 43 اختصاصاتهم في تنفيذ الاحكام والسندات مع مراعاة الشروط الخاصة بالافراغ وبيع العقار (المادة 44).</li>
+          <li>يخضعون للحماية القانونية (الفصلان 263 و267 ق.ج) ولإشراف ومراقبة رئيس المحكمة ووكيل الملك.</li>
+        </ul>
+      </div>
+      <div class="info-box amber">
+        <h4>السلطة المحلية (المادة 334 ق.م.م)</h4>
+        <ul class="clean-list">
+          <li>تكلف السلطة الادارية المحلية بتبليغ وتنفيذ احكام قضاء القرب عندما يكون المستفيد شخصا ذاتيا.</li>
+          <li>يمكن للمستفيد الشخص الذاتي اختيار مفوض قضائي لتبليغ وتنفيذ احكام قضاء القرب.</li>
+          <li>يمكن للمحكمة ان تأمر بالتبليغ او التنفيذ بواسطة موظف من كتابة الضبط، وتراعى مقتضيات المادة 83 وما بعدها بالنسبة للاشخاص الاعتبارية.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-title">قاضي التنفيذ: التعيين والاختصاص والصلاحيات</h3>
+    <p>
+      اسند المشرع التنفيذ الى <strong>قاضي التنفيذ</strong> الذي يعين من بين قضاة محكمة الدرجة الاولى وفق مقتضيات قانون التنظيم القضائي (مكتب المحكمة او الجمعية العامة)، وينوب عنه عند الاقتضاء قاض او اكثر.
+    </p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>الجانب القانوني</th>
+            <th>الاحكام والقواعد المقررة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>انعقاد الاختصاص لقاضي التنفيذ (المادة 475 ق.م.م)</td>
+            <td>ينعقد الاختصاص بالمحكمة المصدرة للحكم، او بالمحكمة التي يوجد بدائرة نفوذها المنفذ ضده، او بالمحكمة التي توجد بها امواله.</td>
+          </tr>
+          <tr>
+            <td>تنفيذ القرارات الاستئنافية وقرارات محكمة النقض (المادة 222 ق.م.م)</td>
+            <td>ينفذ القرار الاستئنافي من طرف محكمة الدرجة الاولى التي اصدرت الحكم الابتدائي، او المحكمة التي تعينها محكمة الدرجة الثانية في شخص رئيسها الاول بناء على طلب الجهة المحكوم لها. ولمحكمة النقض ان تعهد بتنفيذ قراراتها الى محكمة الدرجة الاولى التي تعينها.</td>
+          </tr>
+          <tr>
+            <td>اشكالات الاختصاص المكاني والانابة</td>
+            <td>يثار التساؤل حول كون الاختصاص اختياريا للمستفيد او اجباريا بحسب الحالة، وحول الانابة في ظل غياب نص خاص صريح ووجود المقتضى العام في المادة 618 من قانون المسطرة المدنية.</td>
+          </tr>
+          <tr>
+            <td>مباشرة التنفيذ والاشراف عليه (المادة 485 ق.م.م وما بعدها)</td>
+            <td>التحقق من شروط التنفيذ والاختصاص وقابلية السند للتنفيذ؛ الامر بالتبليغ والاعذار؛ الاذن بفتح المحلات والمنازل والغرف في حدود مصلحة التنفيذ؛ الامر بالبحث عن الاموال المنقولة؛ فرض الغرامة التهديدية عند رفض التزام بعمل او مخالفة امتناع عن عمل (ما لم يسبق الحكم بها)؛ معالجة الصعوبات المادية (ولا يوقف التنفيذ الا بامره، بينما تختص الصعوبة الوقتية برئيس المحكمة)؛ الموافقة على تسخير القوة العمومية من طرف النيابة العامة؛ الموافقة على منح اجل للتنفيذ او دراسة مقترح الوفاء من المدين وعرضه على طالب التنفيذ.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">خطاطة 2: اطراف التنفيذ ومراكزهم القانونية</div>
+      <svg class="flow-svg" viewBox="0 0 920 230" xmlns="http://www.w3.org/2000/svg">
+        <rect x="335" y="10" width="250" height="42" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+        <text x="460" y="37" fill="#ffffff" font-size="17" font-weight="bold" text-anchor="middle">اطراف دائرة التنفيذ</text>
+
+        <line x1="460" y1="52" x2="460" y2="74" stroke="#64748b" stroke-width="2"/>
+        <line x1="160" y1="74" x2="760" y2="74" stroke="#64748b" stroke-width="2"/>
+        <line x1="160" y1="74" x2="160" y2="95" stroke="#10b981" stroke-width="2"/>
+        <line x1="460" y1="74" x2="460" y2="95" stroke="#ef4444" stroke-width="2"/>
+        <line x1="760" y1="74" x2="760" y2="95" stroke="#3b82f6" stroke-width="2"/>
+
+        <rect x="595" y="95" width="300" height="120" rx="10" fill="#111f2d" stroke="#3b82f6" stroke-width="1.8"/>
+        <text x="745" y="120" fill="#93c5fd" font-size="16" font-weight="bold" text-anchor="middle">طالب التنفيذ (المحكوم له / الدائن / الحاجز)</text>
+        <text x="880" y="146" fill="#e2e8f0" font-size="14" text-anchor="end">• يشترط توفر الصفة والاهلية والمصلحة</text>
+        <text x="880" y="170" fill="#e2e8f0" font-size="14" text-anchor="end">• ينتقل الحق الى الورثة والخلف الخاص</text>
+
+        <rect x="310" y="95" width="265" height="120" rx="10" fill="#291518" stroke="#ef4444" stroke-width="1.8"/>
+        <text x="442" y="120" fill="#fca5a5" font-size="16" font-weight="bold" text-anchor="middle">المنفذ عليه (المحكوم عليه / المدين)</text>
+        <text x="560" y="146" fill="#e2e8f0" font-size="14" text-anchor="end">• الطرف المطلوب استيفاء الحق منه</text>
+        <text x="560" y="170" fill="#e2e8f0" font-size="14" text-anchor="end">• تراعى الاهلية وينتقل الالتزام للورثة</text>
+
+        <rect x="25" y="95" width="265" height="120" rx="10" fill="#12241d" stroke="#10b981" stroke-width="1.8"/>
+        <text x="157" y="120" fill="#6ee7b7" font-size="16" font-weight="bold" text-anchor="middle">الغير في التنفيذ</text>
+        <text x="275" y="146" fill="#e2e8f0" font-size="14" text-anchor="end">• ليس طرفا في الدعوى (كالحارس، المودع</text>
+        <text x="275" y="166" fill="#e2e8f0" font-size="14" text-anchor="end">  لديه، او المحافظ على الاملاك العقارية)</text>
+        <text x="275" y="190" fill="#e2e8f0" font-size="14" text-anchor="end">• لا مصلحة شخصية له في نتيجة الحكم</text>
+      </svg>
+      <div class="diagram-caption">تحديد المركز القانوني لكل متدخل يحدد نطاق الالتزامات والضمانات في مسطرة التنفيذ.</div>
+    </div>
+  </section>
+
+  <!-- القسم الثالث -->
+  <section id="sec-title-steps" class="module">
+    <div class="section-header">
+      <h2>ثالثا: السند التنفيذي ومقدمات التنفيذ</h2>
+      <span class="section-tag">المحور 3</span>
+    </div>
+
+    <h3 class="sub-title">مفهوم السند التنفيذي وانواعه</h3>
+    <p>
+      يعد <strong>السند التنفيذي</strong> الحجة القطعية التي لا يمكن للجهة المكلفة بالتنفيذ مباشرة عملها بدونها، وهو الدليل المهيأ لاثبات الحق والوسيلة الوحيدة التي اعتبرها المشرع لسلوك مسطرة التنفيذ الجبري.
+    </p>
+
+    <div class="grid-2">
+      <div class="info-box">
+        <h4>السندات القضائية وشبه القضائية</h4>
+        <ul class="clean-list">
+          <li>الاحكام والقرارات القضائية (اقوى السندات واكثرها شيوعا).</li>
+          <li>الاوامر المبنية على طلب والمعاينات.</li>
+          <li>الاوامر القضائية الاستعجالية والاوامر بالاداء.</li>
+          <li>احكام المحكمين ومحاضر الصلح والوساطة.</li>
+          <li>الاحكام الصادرة عن المحاكم الاجنبية بعد تذييلها بالصيغة التنفيذية.</li>
+        </ul>
+      </div>
+      <div class="info-box green">
+        <h4>السندات التوثيقية والعقارية والمحررات</h4>
+        <ul class="clean-list">
+          <li>المحررات الرسمية والعقود المبرمة بالخارج المستوفية لشروطها.</li>
+          <li>الشهادة العقارية الخاصة التي يعتبرها القانون سندا تنفيذيا.</li>
+          <li><strong>الشروط الموضوعية للحق في السند:</strong> ان يتضمن حقا <strong>محقق الوجود</strong>، و<strong>حال الاداء</strong>، و<strong>معين المقدار</strong>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="info-box amber">
+      <h4>خصوصية الاحكام القضائية والمقررات الاجنبية (المادة 453 ق.م.م)</h4>
+      <p>
+        لكي يكتسب الحكم القضائي قوته التنفيذية، يشترط ان يكون صادرا بالالزام، باتا او حائزا لقوة الشيء المقضي به او مشمولا بالنفاذ المعجل، ومذيلا بالصيغة التنفيذية، مع عدم سقوط اثره التنفيذي (يلاحظ الاشارة الى مدد السقوط الواردة في النصوص كالمادتين 225 و240 والمادة 449).
+      </p>
+      <p>
+        وبخصوص <strong>المقررات الصادرة عن المحاكم الاجنبية (المادة 453)</strong>، يختص بتذييلها رئيس محكمة الدرجة الاولى لمحكمة مكان التنفيذ، بشرط: عدم اختصاص المحاكم المغربية حصريا، انعدام الغش في اختيار المحكمة الاجنبية، الاستدعاء والتمثيل القانوني الصحيح للاطراف، حيازة المقرر لقوة الشيء المقضي به وفق قانون مصدره، عدم تعارضه مع مقرر صادر عن محاكم المملكة، عدم مخالفته للنظام العام المغربي او لاتفاقية دولية مصادق عليها ومنشورة بالجريدة الرسمية، مع مراعاة ان قضايا انحلال ميثاق الزوجية لا يقبل الطعن الا من طرف النيابة العامة.
+      </p>
+    </div>
+
+    <h3 class="sub-title">مقدمات التنفيذ والنسخة التنفيذية</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>المرحلة او الاجراء</th>
+            <th>الاحكام والتفاصيل العملية</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>تقديم الطلب وتسجيل الملف</td>
+            <td>يقدم الطلب في اسم قاضي التنفيذ بناء على طلب المستفيد، مع التحقق من الاختصاص وقابلية السند للتنفيذ، واداء الرسم القضائي، وتسجيل الملف بالسجل الخاص برقم تسلسلي، وتعيين كاتب الضبط المكلف بالتنفيذ او المفوض القضائي المختار.</td>
+          </tr>
+          <tr>
+            <td>النسخة التنفيذية وحالة ضياعها</td>
+            <td>تسلم بعدد الاطراف المحكوم عليهم (ويكتفى بواحدة في الطلب الالكتروني). وفي حالة ضياعها، يبت في الطلب بصفته قاضيا للمستعجلات الرئيس الاول لمحكمة الدرجة الثانية او رئيس محكمة الدرجة الاولى او رئيس القسم المختص (او من ينوب عنهم) في غيبة الاطراف ما لم يقرر خلاف ذلك.</td>
+          </tr>
+          <tr>
+            <td>التبليغ والاعذار (المادة 486 ق.م.م)</td>
+            <td>تبليغ نسخة من طلب التنفيذ ونسخة من السند المراد تنفيذه، واعذار المنفذ عليه داخل اجل 10 ايام بالاداء فورا او التعريف بنواياه لمنحه فرصة الوفاء الطوعي (ويستثنى من ذلك النفاذ المعجل، النفاذ على الاصل، الحجز التحفظي، والحجز لدى الغير لمباغتة المنفذ عليه).</td>
+          </tr>
+          <tr>
+            <td>الشهادة بعدم التعرض والاستئناف (المادة 464 ق.م.م)</td>
+            <td>لان التعرض والاستئناف يوقفان التنفيذ، يتم التثبت من عدم ممارستهما، ويجب الادلاء بها في التنفيذ على الغير، باستثناء حالات النفاذ المعجل.</td>
+          </tr>
+          <tr>
+            <td>التثبت من اداء اليمين او تقديم الضمان (المادة 466 ق.م.م)</td>
+            <td>التحقق من اداء اليمين قبل الشروع في التنفيذ متى وجب ذلك، او تقديم الضمان الذي قد يكون كفالة نقدية (تودع بكتابة الضبط او تسلم لحارس) او كفالة شخصية مع الادلاء بالحجج المثبتة لها.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">خطاطة 3: تسلسل مقدمات التنفيذ الجبري</div>
+      <svg class="flow-svg" viewBox="0 0 940 130" xmlns="http://www.w3.org/2000/svg">
+        <rect x="745" y="20" width="175" height="86" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+        <text x="832" y="50" fill="#93c5fd" font-size="15" font-weight="bold" text-anchor="middle">1. الطلب والسند</text>
+        <text x="832" y="74" fill="#e2e8f0" font-size="13" text-anchor="middle">تقديم الطلب، الرسم،</text>
+        <text x="832" y="92" fill="#e2e8f0" font-size="13" text-anchor="middle">النسخة التنفيذية والتسجيل</text>
+
+        <polygon points="735,63 720,54 720,72" fill="#64748b"/>
+
+        <rect x="530" y="20" width="180" height="86" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+        <text x="620" y="50" fill="#93c5fd" font-size="15" font-weight="bold" text-anchor="middle">2. التبليغ والاعذار</text>
+        <text x="620" y="74" fill="#e2e8f0" font-size="13" text-anchor="middle">تبليغ السند والطلب</text>
+        <text x="620" y="92" fill="#e2e8f0" font-size="13" text-anchor="middle">واعذار خلال 10 ايام</text>
+
+        <polygon points="520,63 505,54 505,72" fill="#64748b"/>
+
+        <rect x="305" y="20" width="190" height="86" rx="10" fill="#1e293b" stroke="#10b981" stroke-width="2"/>
+        <text x="400" y="50" fill="#6ee7b7" font-size="15" font-weight="bold" text-anchor="middle">3. الطعون والضمانات</text>
+        <text x="400" y="74" fill="#e2e8f0" font-size="13" text-anchor="middle">عدم التعرض/الاستئناف</text>
+        <text x="400" y="92" fill="#e2e8f0" font-size="13" text-anchor="middle">واليمين او الكفالة (466)</text>
+
+        <polygon points="295,63 280,54 280,72" fill="#64748b"/>
+
+        <rect x="45" y="20" width="225" height="86" rx="10" fill="#13221c" stroke="#10b981" stroke-width="2"/>
+        <text x="157" y="50" fill="#6ee7b7" font-size="15" font-weight="bold" text-anchor="middle">4. الانطلاق في التنفيذ</text>
+        <text x="157" y="74" fill="#e2e8f0" font-size="13" text-anchor="middle">التنفيذ العيني المباشر</text>
+        <text x="157" y="92" fill="#e2e8f0" font-size="13" text-anchor="middle">او الحجز وبيع الاموال</text>
+      </svg>
+      <div class="diagram-caption">تتدرج مقدمات التنفيذ من التحقق من السند والاختصاص الى اعذار المدين ثم مباشرة التنفيذ الفعلي.</div>
+    </div>
+  </section>
+
+  <!-- القسم الرابع -->
+  <section id="sec-methods" class="module">
+    <div class="section-header">
+      <h2>رابعا: طرق التنفيذ الجبري وانواع الحجوز</h2>
+      <span class="section-tag">المحور 4</span>
+    </div>
+
+    <h3 class="sub-title">التنفيذ العيني المباشر والتنفيذ غير المباشر (الحجز)</h3>
+    <div class="grid-2">
+      <div class="info-box green">
+        <h4>التنفيذ العيني المباشر</h4>
+        <ul class="clean-list">
+          <li>يحصل فيه طالب التنفيذ على عين الشيء المحكوم به (كـتسليم منقول او عقار او رد بضاعة).</li>
+          <li><strong>تسليم شيء:</strong> يمكن استعمال القوة العمومية في حالة الامتناع.</li>
+          <li><strong>القيام بعمل</strong> (اتمام عقد، قطع اشجار، اغلاق نافذة): اذا اقتضى التدخل الشخصي للمحكوم عليه فوسيلته الغرامة التهديدية، ويمكن التنفيذ اذا لم يتوقف على تدخله الشخصي.</li>
+          <li><strong>الامتناع عن القيام بعمل</strong> (كعدم الغرس في ارض الغير): يرتبط بالغرامة التهديدية عند المخالفة.</li>
+        </ul>
+      </div>
+      <div class="info-box amber">
+        <h4>التنفيذ الجبري غير المباشر (الحجز) وقاعدة الاولوية</h4>
+        <ul class="clean-list">
+          <li>عندما يتعلق الامر بمبالغ مالية ويمتنع المنفذ عليه عن الاداء اختيارا، يتم حجز امواله المنقولة او العقارية وبيعها بالمزاد العلني في حدود ما يكفي للوفاء بالدين.</li>
+          <li><strong>القاعدة العامة:</strong> يباشر التنفيذ على <strong>الاموال المنقولة</strong> اولا، فان لم تكف او لم توجد اجري على <strong>الاموال العقارية</strong>.</li>
+          <li><strong>استثناء الضمان العيني:</strong> يقع التنفيذ مباشرة على العقار اذا كان طالب التنفيذ مستفيدا من ضمان عيني (ويبدأ بالمال المثقل بالضمان العيني، ثم سائر الاموال ان لم يكف).</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub-title">انواع الحجز في التشريع المغربي</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>نوع الحجز</th>
+            <th>المرجع والمناط</th>
+            <th>الخصائص والاجراءات الرئيسية</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>الحجز التحفظي</td>
+            <td>المواد 496 الى 502 (ق.م.م)</td>
+            <td>وضع يد القضاء على منقولات او عقارات لمنع المدين من التصرف فيها تصرفا يضر بدائنه (وكل تفويت تبرعا او لعوض يقع باطلا وعديم الاثر). يتم بامر قضائي ولو دون سند تنفيذي؛ ويقيد في المحافظة العقارية للعقار المحفظ او في طور التحفيظ، او يشهر لمدة 15 يوما على نفقة الحاجز لغير المحفظ؛ ويستدعي رفع الدعوى او المطالبة بالحق خلال 10 ايام (ويمكن الاعتراض خلال 8 ايام او طلب القصر او الرفع بكفالة).</td>
+          </tr>
+          <tr>
+            <td>الحجز التنفيذي</td>
+            <td>الفصول 503 الى 571 (ق.م.م)</td>
+            <td>وضع اموال المدين تحت يد القضاء لبيعها واستيفاء الدين؛ يستلزم سندا تنفيذيا ولا يتوقف على امر قضائي، ويبدأ بالمنقول ثم العقار (او بالعقار عبر الانذار العقاري عند وجود ضمان عيني).</td>
+          </tr>
+          <tr>
+            <td>الحجز لدى الغير</td>
+            <td>المواد 572 الى 583 (ق.م.م)</td>
+            <td>حجز اموال وحقوق المدين الموجودة بين يدي الغير من اجل استيفاء الدين.</td>
+          </tr>
+          <tr>
+            <td>الحجز الارتهاني</td>
+            <td>المواد 584 الى 586 (ق.م.م)</td>
+            <td>حجز منقولات مرتبطة بحق امتياز او رهن او كراء/ارتهان وفق شروط القانون.</td>
+          </tr>
+          <tr>
+            <td>الحجز الاستحقاقي</td>
+            <td>المواد 587 الى 590 (ق.م.م)</td>
+            <td>تمكين مالك منقول من حجزه لاسترداده ممن يحوزه بغير حق او وفق المقتضيات المقررة.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub-title">بيانات محضر الحجز واحكام الحارس القضائي</h3>
+    <div class="grid-2">
+      <div class="info-box">
+        <h4>البيانات الاساسية لمحضر الحجز</h4>
+        <p>
+          يجب ان يجري الحجز <strong>بعين المكان</strong> والا كان باطلا، ويتضمن المحضر بصفة خاصة: مراجع السند التنفيذي او امر قاضي التنفيذ، هوية الاطراف، زمان ومكان الحجز، الاجراءات والصعوبات وما تقرر بشأنها، بيان الاموال المحجوزة وصفا ونوعا ومقدارا ووزنا او مقاسا وقيمتها، تاريخ وساعة ومكان البيع، تعيين حارس قضائي عند الاقتضاء، توقيع المكلف بالتنفيذ، وتسليم نسخة للاطراف فور تحريره.
+        </p>
+      </div>
+      <div class="info-box green">
+        <h4>مستجدات الحارس القضائي</h4>
+        <p>
+          يعين المنفذ عليه حارسا قضائيا الا اذا خيف على الاموال لاسباب جدية، واذا لم يكن حاضرا ولم يقبل احد الحراسة اتخذ المكلف بالتنفيذ التدابير اللازمة لايداعها في محل امن. يوقع الحارس على المحضر (او تذكر اسباب الامتناع) وتسلم له نسخة، وينبه الى ان اتلاف او اختلاس او اخفاء او تبديد المحجوزات او الامتناع عن تسليمها يرتب المسؤولية الجنائية والمدنية. ويجوز للحارس المالك او صاحب حق الانتفاع استعمالها فيما اعدت له ما لم يمنعه قاضي التنفيذ، كما يمكن للمنفذ عليه الحارس بيع الاشياء المثلية وتعويضها بمثلها باذن قاضي التنفيذ، ولهذا الاخير تحديد عوض مادي للحارس غير المنفذ عليه او تنظيم استغلال او ادارة المال المنتج او المقاولة عند الاقتضاء.
+        </p>
+      </div>
+    </div>
+
+    <div class="diagram-card">
+      <div class="diagram-title">خطاطة 4: ترتيب التنفيذ على الاموال في الحجز المالي</div>
+      <svg class="flow-svg" viewBox="0 0 920 145" xmlns="http://www.w3.org/2000/svg">
+        <rect x="650" y="20" width="235" height="96" rx="10" fill="#1e293b" stroke="#3b82f6" stroke-width="2"/>
+        <text x="767" y="50" fill="#93c5fd" font-size="16" font-weight="bold" text-anchor="middle">القاعدة: الاموال المنقولة</text>
+        <text x="767" y="76" fill="#e2e8f0" font-size="14" text-anchor="middle">يبدأ التنفيذ بالمنقولات اولا</text>
+        <text x="767" y="98" fill="#cbd5e1" font-size="13" text-anchor="middle">وحصرها وترقيمها في محضر</text>
+
+        <polygon points="635,68 615,58 615,78" fill="#64748b"/>
+
+        <rect x="355" y="20" width="245" height="96" rx="10" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+        <text x="477" y="50" fill="#fcd34d" font-size="16" font-weight="bold" text-anchor="middle">عدم الكفاية او انعدام المنقول</text>
+        <text x="477" y="76" fill="#e2e8f0" font-size="14" text-anchor="middle">ينتقل التنفيذ الى العقار</text>
+        <text x="477" y="98" fill="#cbd5e1" font-size="13" text-anchor="middle">او يبدأ به مباشرة بضمان عيني</text>
+
+        <polygon points="340,68 320,58 320,78" fill="#10b981"/>
+
+        <rect x="40" y="20" width="265" height="96" rx="10" fill="#13221c" stroke="#10b981" stroke-width="2"/>
+        <text x="172" y="50" fill="#6ee7b7" font-size="16" font-weight="bold" text-anchor="middle">البيع واستيفاء الحق وتوزيعه</text>
+        <text x="172" y="76" fill="#e2e8f0" font-size="14" text-anchor="middle">البيع في حدود كفاية الدين</text>
+        <text x="172" y="98" fill="#cbd5e1" font-size="13" text-anchor="middle">وتوزيع الحصيلة (المواد 591-598)</text>
+      </svg>
+      <div class="diagram-caption">تراعي المسطرة التدرج بين المنقول والعقار او التقيد بالضمان العيني المقرر لفائدة الدائن.</div>
+    </div>
+  </section>
+
+  <!-- القسم الخامس: الاختبار التفاعلي -->
+  <section id="sec-quiz" class="module">
+    <div class="section-header">
+      <h2>خامسا: اختبار تفاعلي لقياس الاستيعاب</h2>
+      <span class="section-tag">10 اسئلة متعددة الاختيارات</span>
+    </div>
+
+    <div class="quiz-controls">
+      <div class="score-box" id="scoreDisplay">النتيجة الحالية: لم يتم التصحيح بعد (0 / 10)</div>
+      <div>
+        <button class="btn" onclick="gradeQuiz()">تصحيح الاختبار</button>
+        <button class="btn secondary" onclick="resetQuiz()">اعادة المحاولة</button>
+      </div>
+    </div>
+
+    <form id="quizForm">
+      <!-- سؤال 1 -->
+      <div class="question-card" data-correct="b">
+        <span class="q-num">السؤال 1</span>
+        <div class="q-text">ما هو النطاق المادي للقسم التاسع من قانون المسطرة المدنية المنظم لطرق التنفيذ؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q1" value="a"> من المادة 1 الى المادة 100</label>
+          <label class="option-label"><input type="radio" name="q1" value="b"> من المادة 437 الى المادة 598</label>
+          <label class="option-label"><input type="radio" name="q1" value="c"> من المادة 200 الى المادة 310</label>
+        </div>
+        <div class="feedback" id="fb-q1"></div>
+      </div>
+
+      <!-- سؤال 2 -->
+      <div class="question-card" data-correct="c">
+        <span class="q-num">السؤال 2</span>
+        <div class="q-text">وفق المادة 476 من قانون المسطرة المدنية، بمن يتم التنفيذ اساسا؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q2" value="a"> بالخبراء القضائيين وحدهم</label>
+          <label class="option-label"><input type="radio" name="q2" value="b"> بالمحامين او العدول</label>
+          <label class="option-label"><input type="radio" name="q2" value="c"> بواسطة كتابة الضبط او المفوضين القضائيين</label>
+        </div>
+        <div class="feedback" id="fb-q2"></div>
+      </div>
+
+      <!-- سؤال 3 -->
+      <div class="question-card" data-correct="a">
+        <span class="q-num">السؤال 3</span>
+        <div class="q-text">كيف يطعن في محاضر التنفيذ الرسمية التي يحررها كتاب الضبط؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q3" value="a"> لا يطعن فيها الا بالزور</label>
+          <label class="option-label"><input type="radio" name="q3" value="b"> بمجرد رسالة الكترونية الى رئيس الجلسة</label>
+          <label class="option-label"><input type="radio" name="q3" value="c"> لا تقبل اي طعن مطلقا</label>
+        </div>
+        <div class="feedback" id="fb-q3"></div>
+      </div>
+
+      <!-- سؤال 4 -->
+      <div class="question-card" data-correct="b">
+        <span class="q-num">السؤال 4</span>
+        <div class="q-text">من اي هيئة يعين قاضي التنفيذ؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q4" value="a"> من بين المفوضين القضائيين</label>
+          <label class="option-label"><input type="radio" name="q4" value="b"> من بين قضاة محكمة الدرجة الاولى</label>
+          <label class="option-label"><input type="radio" name="q4" value="c"> من بين اعضاء المجلس الجماعي</label>
+        </div>
+        <div class="feedback" id="fb-q4"></div>
+      </div>
+
+      <!-- سؤال 5 -->
+      <div class="question-card" data-correct="c">
+        <span class="q-num">السؤال 5</span>
+        <div class="q-text">ما هي الشروط الواجب توفرها في الحق الثابت في السند التنفيذي؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q5" value="a"> ان يكون محتملا ومؤجلا لاجل غير مسمى</label>
+          <label class="option-label"><input type="radio" name="q5" value="b"> ان يكون شفويا غير مكتوب</label>
+          <label class="option-label"><input type="radio" name="q5" value="c"> ان يكون محقق الوجود، حال الاداء، ومعين المقدار</label>
+        </div>
+        <div class="feedback" id="fb-q5"></div>
+      </div>
+
+      <!-- سؤال 6 -->
+      <div class="question-card" data-correct="a">
+        <span class="q-num">السؤال 6</span>
+        <div class="q-text">ما هو الاجل المقرر في الاعذار بالتنفيذ وفق المادة 486 من قانون المسطرة المدنية؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q6" value="a"> عشرة (10) ايام</label>
+          <label class="option-label"><input type="radio" name="q6" value="b"> ستون (60) يوما</label>
+          <label class="option-label"><input type="radio" name="q6" value="c"> ثلاثة (3) اشهر</label>
+        </div>
+        <div class="feedback" id="fb-q6"></div>
+      </div>
+
+      <!-- سؤال 7 -->
+      <div class="question-card" data-correct="b">
+        <span class="q-num">السؤال 7</span>
+        <div class="q-text">ما هو الترتيب العام في الحجز المالي عندما لا يتوفر الدائن على ضمان عيني؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q7" value="a"> يبدأ بالعقار اولا ثم المنقول</label>
+          <label class="option-label"><input type="radio" name="q7" value="b"> يباشر على الاموال المنقولة اولا، فان لم تكف او لم توجد فالعقارية</label>
+          <label class="option-label"><input type="radio" name="q7" value="c"> يقتصر على الاسهم والسندات فقط</label>
+        </div>
+        <div class="feedback" id="fb-q7"></div>
+      </div>
+
+      <!-- سؤال 8 -->
+      <div class="question-card" data-correct="c">
+        <span class="q-num">السؤال 8</span>
+        <div class="q-text">ما هي القاعدة الاساسية المتعلقة بمكان اجراء الحجز؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q8" value="a"> يجوز اجراؤه في مكتب المكلف بالتنفيذ دون انتقال</label>
+          <label class="option-label"><input type="radio" name="q8" value="b"> يتم عبر الهاتف دون تحرير محضر</label>
+          <label class="option-label"><input type="radio" name="q8" value="c"> يجري بعين المكان، والا كان الحجز باطلا</label>
+        </div>
+        <div class="feedback" id="fb-q8"></div>
+      </div>
+
+      <!-- سؤال 9 -->
+      <div class="question-card" data-correct="a">
+        <span class="q-num">السؤال 9</span>
+        <div class="q-text">من يعين في الغالب حارسا قضائيا على الاموال المحجوزة؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q9" value="a"> المنفذ عليه ما لم يخف على الاموال لاسباب جدية</label>
+          <label class="option-label"><input type="radio" name="q9" value="b"> شاهد الاثبات في القضية</label>
+          <label class="option-label"><input type="radio" name="q9" value="c"> الطرف المشتكي في جميع الاحوال</label>
+        </div>
+        <div class="feedback" id="fb-q9"></div>
+      </div>
+
+      <!-- سؤال 10 -->
+      <div class="question-card" data-correct="b">
+        <span class="q-num">السؤال 10</span>
+        <div class="q-text">بمقتضى المادة 334 من قانون المسطرة المدنية، من يكلف بتبليغ وتنفيذ احكام قضاء القرب عندما يكون المستفيد شخصا ذاتيا؟</div>
+        <div class="options-list">
+          <label class="option-label"><input type="radio" name="q10" value="a"> المجلس الاعلى للسلطة القضائية</label>
+          <label class="option-label"><input type="radio" name="q10" value="b"> السلطة الادارية المحلية (مع امكان اختيار مفوض قضائي من طرف المستفيد)</label>
+          <label class="option-label"><input type="radio" name="q10" value="c"> مصالح الضرائب المحلية</label>
+        </div>
+        <div class="feedback" id="fb-q10"></div>
+      </div>
+    </form>
+
+    <div class="summary-banner" id="summaryBanner"></div>
+  </section>
+
+</div>
+
+<script>
+  const explanations = {
+    q1: "ينظم القسم التاسع من قانون المسطرة المدنية طرق التنفيذ من المادة 437 الى المادة 598.",
+    q2: "تنص المادة 476 من قانون المسطرة المدنية على ان التنفيذ يتم بواسطة كتابة الضبط او بواسطة المفوضين القضائيين.",
+    q3: "تكتسب محاضر كتابة الضبط صفة الرسمية ولا يطعن فيها الا بالزور.",
+    q4: "يعين قاضي التنفيذ من بين قضاة محكمة الدرجة الاولى وفق قانون التنظيم القضائي.",
+    q5: "يشترط في الحق الثابت في السند التنفيذي ان يكون محقق الوجود، حال الاداء، ومعين المقدار.",
+    q6: "يمنح الاعذار وفق المادة 486 اجل 10 ايام للاداء فورا او التعريف بالنوايا.",
+    q7: "القاعدة العامة هي البدء بالاموال المنقولة ثم الانتقال الى العقارية عند عدم وجودها او عدم كفايتها.",
+    q8: "يشترط اجراء الحجز بعين المكان، ويترتب على مخالفته بطلان الحجز.",
+    q9: "يعين المنفذ عليه حارسا قضائيا الا اذا خيف على الاموال المحجوزة لاسباب جدية.",
+    q10: "تكلف السلطة الادارية المحلية بتبليغ وتنفيذ احكام قضاء القرب للمستفيد الشخص الذاتي، مع جواز اختياره لمفوض قضائي."
+  };
+
+  function gradeQuiz() {
+    const cards = document.querySelectorAll(".question-card");
+    let score = 0;
+    let answeredCount = 0;
+
+    cards.forEach((card, idx) => {
+      const qName = "q" + (idx + 1);
+      const correctVal = card.getAttribute("data-correct");
+      const selected = card.querySelector(`input[name="${qName}"]:checked`);
+      const fb = document.getElementById("fb-" + qName);
+
+      if (!selected) {
+        fb.className = "feedback wrong";
+        fb.innerHTML = `لم تختر اجابة بعد. الاجابة الصحيحة هي (${correctVal.toUpperCase()}) — ${explanations[qName]}`;
+        return;
+      }
+
+      answeredCount++;
+      if (selected.value === correctVal) {
+        score++;
+        fb.className = "feedback correct";
+        fb.innerHTML = `اجابة صحيحة. ${explanations[qName]}`;
+      } else {
+        fb.className = "feedback wrong";
+        fb.innerHTML = `اجابة غير صحيحة. الصحيح هو (${correctVal.toUpperCase()}): ${explanations[qName]}`;
+      }
+    });
+
+    document.getElementById("scoreDisplay").textContent = `النتيجة: ${score} / ${cards.length}`;
+    const banner = document.getElementById("summaryBanner");
+    banner.style.display = "block";
+    banner.innerHTML = `حصلت على <strong>${score} من ${cards.length}</strong> (تمت الاجابة على ${answeredCount} اسئلة). يمكنك مراجعة الشروحات اسفل كل سؤال او اعادة المحاولة.`;
+  }
+
+  function resetQuiz() {
+    document.getElementById("quizForm").reset();
+    document.querySelectorAll(".feedback").forEach(el => {
+      el.className = "feedback";
+      el.innerHTML = "";
+    });
+    document.getElementById("scoreDisplay").textContent = "النتيجة الحالية: لم يتم التصحيح بعد (0 / 10)";
+    const banner = document.getElementById("summaryBanner");
+    banner.style.display = "none";
+    banner.innerHTML = "";
+  }
+</script>
+</body>
+</html>
