@@ -1512,7 +1512,7 @@
         renderOwnerList();
       };
 
-      const loadPublicArticles = async () => {
+      let loadPublicArticles = async () => {
         try {
           const res = await fetch('./articles.json', { cache: 'no-store' });
           if (res.ok) {
@@ -1551,12 +1551,53 @@
       $('#searchBtn').addEventListener('click', renderArticles);
       $('#searchInput').addEventListener('input', renderArticles);
 
+      // ===== الكشف التلقائي عن كود HTML الكامل =====
+      const looksLikeHtmlDocument = (str) => {
+        const t = String(str || '').trim();
+        return /<!doctype\s+html/i.test(t) || /<html[\s>]/i.test(t) || (/<(body|head|style|svg|section|div|article|main)[\s>]/i.test(t) && /<\/[a-zA-Z0-9]+\s*>/i.test(t));
+      };
+
+      const isHtmlArticle = (art) => Boolean(art && (art.isHtml || looksLikeHtmlDocument(art.content)));
+
       // ===== نافذة القراءة =====
       const readModal = $('#readModal');
       const readTitle = $('#readTitle');
       const readContent = $('#readContent');
+      const readModalCard = readModal.querySelector('.modal-card');
+      const toggleHtmlExpandBtn = $('#toggleHtmlExpandBtn');
+
+      toggleHtmlExpandBtn.addEventListener('click', () => {
+        const full = readModalCard.classList.toggle('html-fullscreen');
+        toggleHtmlExpandBtn.textContent = full ? 'تصغير الإطار' : 'ملء الشاشة';
+      });
 
       function openReadModal(art) {
+        readModalCard.classList.remove('html-wide', 'html-fullscreen');
+        toggleHtmlExpandBtn.style.display = 'none';
+        toggleHtmlExpandBtn.textContent = 'ملء الشاشة';
+
+        if (isHtmlArticle(art)) {
+          incrementView(art);
+          readTitle.textContent = art.title;
+          readModalCard.classList.add('html-wide');
+          toggleHtmlExpandBtn.style.display = 'inline-flex';
+
+          const rawHtml = String(art.content || '');
+          const docHtml = /<html[\s>]/i.test(rawHtml) || /<!doctype\s+html/i.test(rawHtml)
+            ? rawHtml
+            : `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:20px;font-family:"Alexandria","IBM Plex Sans Arabic",Tahoma,sans-serif;line-height:1.9;background:#0f141c;color:#eef2f7;}</style></head><body>${rawHtml}</body></html>`;
+
+          readContent.innerHTML = `
+            <p class="article-meta" style="margin-bottom:10px;">${safe(art.category)} · ${safe(art.subcategory)} · ${safe(art.date || '')} · 👁 ${getViews(art)} قراءة</p>
+            <iframe class="html-article-frame" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer"></iframe>
+            ${art.url ? `<p style="margin-top:12px;"><a class="btn" href="${safe(art.url)}" target="_blank" rel="noopener noreferrer">فتح المادة المرفقة ↗</a></p>` : ''}
+          `;
+          const frame = readContent.querySelector('iframe.html-article-frame');
+          if (frame) frame.srcdoc = docHtml;
+          readModal.classList.add('show');
+          return;
+        }
+
         incrementView(art);
         readTitle.textContent = art.title;
 
@@ -1779,71 +1820,13 @@
       const resetForm = () => {
         $('#articleForm').reset();
         $('#editId').value = '';
+        $('#isHtmlContent').checked = false;
       };
 
       $('#resetForm').addEventListener('click', resetForm);
       $('#ownerNewArticle').addEventListener('click', () => {
         resetForm();
         $('#title').focus();
-      });
-
-      $('#articleForm').addEventListener('submit', e => {
-        e.preventDefault();
-        if (!isOwner) return;
-        const id = $('#editId').value || ('art-' + Date.now());
-        const existing = articles.find(a => a.id === id);
-        const item = {
-          id,
-          title: $('#title').value.trim(),
-          category: $('#category').value,
-          subcategory: $('#subcategory').value,
-          excerpt: $('#excerpt').value.trim(),
-          content: $('#content').value.trim(),
-          url: $('#url').value.trim(),
-          date: existing?.date || new Date().toISOString().slice(0, 10),
-          views: existing ? getViews(existing) : 0,
-          mindmapText: $('#mindmapEnabled').checked ? $('#mindmapText').value.trim() : '',
-          flashText: $('#flashEnabled').checked ? $('#flashText').value.trim() : '',
-          quizText: $('#quizEnabled').checked ? $('#quizText').value.trim() : ''
-        };
-        if (existing) articles = articles.map(a => a.id === id ? item : a);
-        else articles.unshift(item);
-        saveArticles();
-        renderArticles();
-        resetForm();
-        alert('تم حفظ المقال.');
-      });
-
-      document.addEventListener('click', e => {
-        const editBtn = e.target.closest('[data-edit]');
-        if (editBtn) {
-          if (!isOwner) return;
-          const art = articles.find(a => a.id === editBtn.dataset.edit);
-          if (!art) return;
-          $('#editId').value = art.id;
-          $('#title').value = art.title;
-          $('#category').value = art.category;
-          $('#subcategory').value = art.subcategory;
-          $('#excerpt').value = art.excerpt;
-          $('#content').value = art.content || '';
-          $('#url').value = art.url || '';
-          $('#mindmapEnabled').checked = !!art.mindmapText;
-          $('#mindmapText').value = art.mindmapText || '';
-          $('#flashEnabled').checked = !!art.flashText;
-          $('#flashText').value = art.flashText || '';
-          $('#quizEnabled').checked = !!art.quizText;
-          $('#quizText').value = art.quizText || '';
-          $('#title').focus();
-        }
-        const delBtn = e.target.closest('[data-del]');
-        if (delBtn) {
-          if (!isOwner) return;
-          if (confirm('حذف هذا المقال؟')) {
-            articles = articles.filter(a => a.id !== delBtn.dataset.del);
-            saveArticles();
-            renderArticles();
-          }
-        }
       });
 
       $('#exportBtn').addEventListener('click', () => {
@@ -2077,7 +2060,6 @@
         const jsonMatch = rawText.match(/\{[\s\S]*\}/);
         const candidate = jsonMatch ? jsonMatch[0] : rawText;
         try {
-          // Support JS object literal with unquoted keys as well as strict JSON
           const normalized = candidate
             .replace(/([{,\s])([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
             .replace(/'/g, '"');
@@ -2141,59 +2123,9 @@
         }
       });
 
-      // الكشف التلقائي عن كود HTML الكامل حتى لو لم يضغط المستخدم الخيار يدوياً
-      const looksLikeHtmlDocument = (str) => {
-        const t = String(str || '').trim();
-        return /<!doctype\s+html/i.test(t) || /<html[\s>]/i.test(t) || (/<(body|head|style|svg|section|div|article|main)[\s>]/i.test(t) && /<\/[a-zA-Z0-9]+\s*>/i.test(t));
-      };
-
-      const isHtmlArticle = (art) => Boolean(art && (art.isHtml || looksLikeHtmlDocument(art.content)));
-
-      // تحديث فتح المقال لدعم عرض صفحات HTML كاملة في مساحة واسعة وملء الشاشة
-      const readModalCard = readModal.querySelector('.modal-card');
-      const toggleHtmlExpandBtn = $('#toggleHtmlExpandBtn');
-
-      toggleHtmlExpandBtn.addEventListener('click', () => {
-        const full = readModalCard.classList.toggle('html-fullscreen');
-        toggleHtmlExpandBtn.textContent = full ? 'تصغير الإطار' : 'ملء الشاشة';
-      });
-
-      const origOpenReadModal = openReadModal;
-      openReadModal = function(art) {
-        readModalCard.classList.remove('html-wide', 'html-fullscreen');
-        toggleHtmlExpandBtn.style.display = 'none';
-        toggleHtmlExpandBtn.textContent = 'ملء الشاشة';
-
-        if (isHtmlArticle(art)) {
-          incrementView(art);
-          readTitle.textContent = art.title;
-          readModalCard.classList.add('html-wide');
-          toggleHtmlExpandBtn.style.display = 'inline-flex';
-
-          const rawHtml = String(art.content || '');
-          const docHtml = /<html[\s>]/i.test(rawHtml) || /<!doctype\s+html/i.test(rawHtml)
-            ? rawHtml
-            : `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:20px;font-family:"Alexandria","IBM Plex Sans Arabic",Tahoma,sans-serif;line-height:1.9;background:#0f141c;color:#eef2f7;}</style></head><body>${rawHtml}</body></html>`;
-
-          readContent.innerHTML = `
-            <p class="article-meta" style="margin-bottom:10px;">${safe(art.category)} · ${safe(art.subcategory)} · ${safe(art.date || '')} · 👁 ${getViews(art)} قراءة</p>
-            <iframe class="html-article-frame" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer"></iframe>
-            ${art.url ? `<p style="margin-top:12px;"><a class="btn" href="${safe(art.url)}" target="_blank" rel="noopener noreferrer">فتح المادة المرفقة ↗</a></p>` : ''}
-          `;
-          const frame = readContent.querySelector('iframe.html-article-frame');
-          if (frame) frame.srcdoc = docHtml;
-          readModal.classList.add('show');
-          return;
-        }
-
-        origOpenReadModal(art);
-      };
-
-      // تحديث حفظ وتعديل وحذف المقال ليرسل للسحابة فوراً عند تفعيل Firebase
-      const articleFormEl = $('#articleForm');
-      const newArticleSubmitHandler = async e => {
+      // حفظ وتعديل وحذف المقال مع المزامنة السحابية الفورية
+      $('#articleForm').addEventListener('submit', async e => {
         e.preventDefault();
-        e.stopImmediatePropagation();
         if (!isOwner) return;
         const id = $('#editId').value || ('art-' + Date.now());
         const existing = articles.find(a => a.id === id);
@@ -2231,13 +2163,7 @@
           }
         }
         alert('تم حفظ المقال محلياً. فعّل الربط السحابي (Firebase) ليظهر مباشرة لجميع الزوار، أو اضغط «تصدير articles.json».');
-      };
-
-      // Replace previous submit listener cleanly by cloning form
-      const cleanForm = articleFormEl.cloneNode(true);
-      articleFormEl.parentNode.replaceChild(cleanForm, articleFormEl);
-      cleanForm.addEventListener('submit', newArticleSubmitHandler);
-      $('#resetForm').addEventListener('click', resetForm);
+      });
 
       document.addEventListener('click', async e => {
         const editBtn = e.target.closest('[data-edit]');
@@ -2277,14 +2203,14 @@
             }
           }
         }
-      }, true);
+      });
 
-      const origLoadPublicArticles = loadPublicArticles;
+      const previousLoadPublicArticles = loadPublicArticles;
       loadPublicArticles = async function() {
         updateFirebaseUiStatus();
         const connected = await subscribeCloudArticles();
         if (!connected) {
-          await origLoadPublicArticles();
+          await previousLoadPublicArticles();
         }
       };
 
