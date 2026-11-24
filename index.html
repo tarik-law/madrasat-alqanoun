@@ -1915,11 +1915,26 @@
       const FB_CONFIG_STORE = 'mq_firebase_config_v1';
       const FB_COLLECTION = 'mq_articles';
 
-      let fbConfig = null;
+      const DEFAULT_FB_CONFIG = {
+        apiKey: "AIzaSyCqtiQufbs2CiyYUkwSmMKAScIXKVCokvA",
+        authDomain: "madrasat-alqanoun.firebaseapp.com",
+        projectId: "madrasat-alqanoun",
+        storageBucket: "madrasat-alqanoun.firebasestorage.app",
+        messagingSenderId: "73132902930",
+        appId: "1:73132902930:web:41bdaa070dc217d0d0a6cb",
+        measurementId: "G-G9XGJ410XH"
+      };
+
+      let fbConfig = DEFAULT_FB_CONFIG;
       try {
         const rawFb = localStorage.getItem(FB_CONFIG_STORE);
-        if (rawFb) fbConfig = JSON.parse(rawFb);
-      } catch (e) { fbConfig = null; }
+        if (rawFb) {
+          const parsedFb = JSON.parse(rawFb);
+          if (parsedFb && parsedFb.apiKey && parsedFb.projectId) {
+            fbConfig = parsedFb;
+          }
+        }
+      } catch (e) { fbConfig = DEFAULT_FB_CONFIG; }
 
       let dbInstance = null;
       let fbUnsubscribe = null;
