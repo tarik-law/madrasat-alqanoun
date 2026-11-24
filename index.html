@@ -574,6 +574,32 @@
       border-radius: 20px;
       padding: 22px;
       box-shadow: var(--shadow);
+      transition: width .2s ease, max-width .2s ease, height .2s ease, max-height .2s ease, border-radius .2s ease, padding .2s ease;
+    }
+    .modal-card.html-wide {
+      width: min(1320px, 98vw);
+      max-height: 94vh;
+    }
+    .modal-card.html-fullscreen {
+      width: 100vw;
+      max-width: 100vw;
+      height: 100vh;
+      max-height: 100vh;
+      border-radius: 0;
+      padding: 14px 18px;
+    }
+    .html-article-frame {
+      width: 100%;
+      min-height: 72vh;
+      height: 76vh;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #0f141c;
+      display: block;
+    }
+    .modal-card.html-fullscreen .html-article-frame {
+      height: calc(100vh - 82px);
+      min-height: 0;
     }
     .modal-head {
       display: flex;
@@ -1120,8 +1146,11 @@
               <textarea id="excerpt" required maxlength="320" rows="2"></textarea>
             </div>
             <div class="field">
-              <label for="content">المحتوى</label>
-              <textarea id="content" rows="5"></textarea>
+              <label for="content">المحتوى (نص عادي أو كود HTML كامل للمقال)</label>
+              <label style="display:inline-flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;margin-bottom:4px;">
+                <input type="checkbox" id="isHtmlContent"> عرض المحتوى كصفحة HTML كاملة للزائر (مناسب للخطاطات التفاعلية والاختبارات المدمجة)
+              </label>
+              <textarea id="content" rows="7" placeholder="اكتب نص المقال هنا، أو الصق كود HTML الكامل للمقال..."></textarea>
             </div>
             <div class="field">
               <label for="url">رابط خارجي أو ملف PDF (اختياري)</label>
@@ -1159,18 +1188,70 @@
         </div>
       </div>
 
-      <div class="notice">
-        <b>ملاحظة:</b> لتظهر المقالات لجميع الزوار على Cloudflare Pages بعد الحفظ، اضغط «تصدير articles.json» وضع الملف داخل مجلد الموقع مع <strong>index.html</strong>.
+      <div class="notice" id="firebaseCloudBox" style="margin-top:12px;">
+        <b>المزامنة السحابية المباشرة (Firebase Firestore):</b>
+        <span id="firebaseStatusText">غير مفعّل بعد — اضغط «إعداد الربط السحابي» لإدخال بيانات Firebase مرة واحدة ليظهر الحفظ فوراً لجميع الزوار دون تصدير يدوي.</span>
+        <div class="admin-tools" style="margin-top:8px;margin-bottom:0;">
+          <button class="btn secondary" type="button" id="openFirebaseSetupBtn">إعداد الربط السحابي (Firebase)</button>
+          <button class="btn secondary" type="button" id="syncToFirebaseBtn">مزامنة جميع المقالات للسحابة الآن</button>
+        </div>
       </div>
+
+      <div class="notice">
+        <b>ملاحظة:</b> عند تفعيل الربط السحابي، يظهر كل مقال للزوار فور الضغط على «حفظ المقال» من أي جهاز. كما يمكنك «تصدير articles.json» كنسخة احتياطية دائماً.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Modal: Firebase Cloud Setup ===== -->
+  <div class="modal" id="firebaseSetupModal" role="dialog" aria-modal="true" aria-labelledby="firebaseSetupTitle">
+    <div class="modal-card" style="width:min(540px,100%);">
+      <div class="modal-head">
+        <h2 id="firebaseSetupTitle">إعداد الحفظ السحابي الفوري (Firebase)</h2>
+        <button class="close" type="button" data-close="firebaseSetupModal" aria-label="إغلاق">×</button>
+      </div>
+      <p class="form-note">أدخل بيانات مشروع Firebase Firestore مرة واحدة (أو الصق كائن <code>firebaseConfig</code>). سيتم حفظ الإعدادات محلياً في متصفح المالك لرفع المقالات فوراً عند الضغط على «حفظ المقال».</p>
+      <form id="firebaseSetupForm">
+        <div class="field">
+          <label for="fbPasteJson">لصق سريع لبيانات firebaseConfig (اختياري)</label>
+          <textarea id="fbPasteJson" rows="4" placeholder='{"apiKey":"...","authDomain":"...","projectId":"...","storageBucket":"...","messagingSenderId":"...","appId":"..."}'></textarea>
+          <button class="btn secondary" type="button" id="parseFbJsonBtn">تعبئة الحقول تلقائياً من اللصق</button>
+        </div>
+        <div class="field">
+          <label for="fbApiKey">apiKey</label>
+          <input id="fbApiKey" type="text" required>
+        </div>
+        <div class="field">
+          <label for="fbProjectId">projectId</label>
+          <input id="fbProjectId" type="text" required>
+        </div>
+        <div class="field">
+          <label for="fbAppId">appId</label>
+          <input id="fbAppId" type="text" required>
+        </div>
+        <div class="field">
+          <label for="fbAuthDomain">authDomain (اختياري)</label>
+          <input id="fbAuthDomain" type="text" placeholder="your-project.firebaseapp.com">
+        </div>
+        <div class="admin-tools">
+          <button class="btn" type="submit">حفظ وتفعيل الربط السحابي</button>
+          <button class="btn secondary" type="button" id="clearFbConfigBtn">إلغاء الربط</button>
+          <button class="btn secondary" type="button" data-close="firebaseSetupModal">إغلاق</button>
+        </div>
+        <p id="fbSetupStatus" class="form-note"></p>
+      </form>
     </div>
   </div>
 
   <!-- ===== Modal: Read Article ===== -->
   <div class="modal" id="readModal" role="dialog" aria-modal="true" aria-labelledby="readTitle">
     <div class="modal-card">
-      <div class="modal-head">
+      <div class="modal-head" id="readModalHead">
         <h2 id="readTitle">عنوان المقال</h2>
-        <button class="close" type="button" data-close="readModal" aria-label="إغلاق">×</button>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <button class="btn secondary" type="button" id="toggleHtmlExpandBtn" style="display:none;padding:6px 12px;font-size:11px;">ملء الشاشة</button>
+          <button class="close" type="button" data-close="readModal" aria-label="إغلاق">×</button>
+        </div>
       </div>
       <div id="readContent"></div>
     </div>
@@ -1829,6 +1910,368 @@
         $('#cookieBox').classList.remove('show');
       });
       $('#cookieClose').addEventListener('click', () => $('#cookieBox').classList.remove('show'));
+
+      // ===== الربط السحابي المباشر مع Firebase Firestore =====
+      const FB_CONFIG_STORE = 'mq_firebase_config_v1';
+      const FB_COLLECTION = 'mq_articles';
+
+      let fbConfig = null;
+      try {
+        const rawFb = localStorage.getItem(FB_CONFIG_STORE);
+        if (rawFb) fbConfig = JSON.parse(rawFb);
+      } catch (e) { fbConfig = null; }
+
+      let dbInstance = null;
+      let fbUnsubscribe = null;
+
+      const updateFirebaseUiStatus = (msg) => {
+        const el = $('#firebaseStatusText');
+        if (!el) return;
+        if (msg) {
+          el.textContent = msg;
+          return;
+        }
+        if (fbConfig && fbConfig.apiKey && fbConfig.projectId) {
+          el.textContent = `متصل بـ Firebase (${fbConfig.projectId}) — الحفظ والتعديل والحذف يظهر مباشرة لجميع الزوار.`;
+        } else {
+          el.textContent = 'غير مفعّل بعد — اضغط «إعداد الربط السحابي» لإدخال بيانات Firebase مرة واحدة ليظهر الحفظ فوراً لجميع الزوار دون تصدير يدوي.';
+        }
+      };
+
+      const loadFirebaseSdk = () => new Promise((resolve, reject) => {
+        if (!fbConfig || !fbConfig.apiKey || !fbConfig.projectId) {
+          reject(new Error('no_config'));
+          return;
+        }
+        if (window.firebase && window.firebase.firestore) {
+          resolve(window.firebase.firestore());
+          return;
+        }
+        const initApp = () => {
+          try {
+            if (!window.firebase.apps.length) {
+              window.firebase.initializeApp(fbConfig);
+            }
+            const db = window.firebase.firestore();
+            resolve(db);
+          } catch (err) {
+            reject(err);
+          }
+        };
+        const existingCompat = document.querySelector('script[data-fb-sdk="compat"]');
+        if (existingCompat) {
+          existingCompat.addEventListener('load', initApp, { once: true });
+          existingCompat.addEventListener('error', reject, { once: true });
+          return;
+        }
+        const s1 = document.createElement('script');
+        s1.src = 'https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js';
+        s1.dataset.fbSdk = 'compat';
+        s1.onload = () => {
+          const s2 = document.createElement('script');
+          s2.src = 'https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js';
+          s2.onload = initApp;
+          s2.onerror = reject;
+          document.head.appendChild(s2);
+        };
+        s1.onerror = reject;
+        document.head.appendChild(s1);
+      });
+
+      const upsertArticleCloud = async (item) => {
+        if (!fbConfig || !fbConfig.apiKey || !fbConfig.projectId) return false;
+        const db = dbInstance || await loadFirebaseSdk();
+        dbInstance = db;
+        await db.collection(FB_COLLECTION).doc(String(item.id)).set({
+          ...item,
+          updatedAt: Date.now()
+        }, { merge: true });
+        return true;
+      };
+
+      const deleteArticleCloud = async (id) => {
+        if (!fbConfig || !fbConfig.apiKey || !fbConfig.projectId) return false;
+        const db = dbInstance || await loadFirebaseSdk();
+        dbInstance = db;
+        await db.collection(FB_COLLECTION).doc(String(id)).delete();
+        return true;
+      };
+
+      const syncAllArticlesCloud = async () => {
+        if (!fbConfig || !fbConfig.apiKey || !fbConfig.projectId) return false;
+        const db = dbInstance || await loadFirebaseSdk();
+        dbInstance = db;
+        const batch = db.batch();
+        articles.forEach(art => {
+          const ref = db.collection(FB_COLLECTION).doc(String(art.id));
+          batch.set(ref, { ...art, views: getViews(art), updatedAt: Date.now() }, { merge: true });
+        });
+        await batch.commit();
+        return true;
+      };
+
+      const subscribeCloudArticles = async () => {
+        if (!fbConfig || !fbConfig.apiKey || !fbConfig.projectId) {
+          updateFirebaseUiStatus();
+          return false;
+        }
+        try {
+          const db = await loadFirebaseSdk();
+          dbInstance = db;
+          if (typeof fbUnsubscribe === 'function') {
+            fbUnsubscribe();
+            fbUnsubscribe = null;
+          }
+          updateFirebaseUiStatus();
+          fbUnsubscribe = db.collection(FB_COLLECTION).onSnapshot(snap => {
+            const cloudList = [];
+            snap.forEach(doc => {
+              const d = doc.data() || {};
+              cloudList.push({ ...d, id: d.id || doc.id });
+            });
+            cloudList.sort((a, b) => Number(b.updatedAt || 0) - Number(a.updatedAt || 0) || String(b.date || '').localeCompare(String(a.date || '')));
+            articles = cloudList.map(item => ({
+              ...item,
+              views: Math.max(Number(item.views || 0), Number(localViews[item.id] || 0))
+            }));
+            saveArticles();
+            renderArticles();
+          }, err => {
+            updateFirebaseUiStatus('تعذر الاتصال الفوري بـ Firebase — تحقق من إعدادات المشروع وقواعد Firestore.');
+          });
+          return true;
+        } catch (err) {
+          updateFirebaseUiStatus('تعذر تحميل مكتبة Firebase — تحقق من الاتصال أو البيانات.');
+          return false;
+        }
+      };
+
+      $('#openFirebaseSetupBtn').addEventListener('click', () => {
+        $('#fbApiKey').value = fbConfig?.apiKey || '';
+        $('#fbProjectId').value = fbConfig?.projectId || '';
+        $('#fbAppId').value = fbConfig?.appId || '';
+        $('#fbAuthDomain').value = fbConfig?.authDomain || '';
+        $('#fbPasteJson').value = '';
+        $('#fbSetupStatus').textContent = '';
+        $('#firebaseSetupModal').classList.add('show');
+      });
+
+      $('#parseFbJsonBtn').addEventListener('click', () => {
+        const rawText = ($('#fbPasteJson').value || '').trim();
+        if (!rawText) return;
+        const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+        const candidate = jsonMatch ? jsonMatch[0] : rawText;
+        try {
+          // Support JS object literal with unquoted keys as well as strict JSON
+          const normalized = candidate
+            .replace(/([{,\s])([a-zA-Z0-9_]+)\s*:/g, '$1"$2":')
+            .replace(/'/g, '"');
+          const parsed = JSON.parse(normalized);
+          if (parsed.apiKey) $('#fbApiKey').value = parsed.apiKey;
+          if (parsed.projectId) $('#fbProjectId').value = parsed.projectId;
+          if (parsed.appId) $('#fbAppId').value = parsed.appId;
+          if (parsed.authDomain) $('#fbAuthDomain').value = parsed.authDomain;
+          $('#fbSetupStatus').textContent = 'تم استخراج الحقول بنجاح. اضغط «حفظ وتفعيل الربط السحابي».';
+        } catch (e) {
+          $('#fbSetupStatus').textContent = 'لم يتم التعرف على الصيغة، يمكنك تعبئة الحقول يدوياً أدناه.';
+        }
+      });
+
+      $('#firebaseSetupForm').addEventListener('submit', async e => {
+        e.preventDefault();
+        const apiKey = $('#fbApiKey').value.trim();
+        const projectId = $('#fbProjectId').value.trim();
+        const appId = $('#fbAppId').value.trim();
+        const authDomain = $('#fbAuthDomain').value.trim() || `${projectId}.firebaseapp.com`;
+        if (!apiKey || !projectId || !appId) return;
+
+        fbConfig = { apiKey, projectId, appId, authDomain };
+        localStorage.setItem(FB_CONFIG_STORE, JSON.stringify(fbConfig));
+        dbInstance = null;
+        $('#fbSetupStatus').textContent = 'جارٍ التحقق والاتصال بـ Firebase...';
+        const ok = await subscribeCloudArticles();
+        if (ok) {
+          $('#fbSetupStatus').textContent = 'تم تفعيل الربط السحابي بنجاح!';
+          setTimeout(() => $('#firebaseSetupModal').classList.remove('show'), 700);
+        }
+      });
+
+      $('#clearFbConfigBtn').addEventListener('click', () => {
+        if (typeof fbUnsubscribe === 'function') {
+          fbUnsubscribe();
+          fbUnsubscribe = null;
+        }
+        fbConfig = null;
+        dbInstance = null;
+        localStorage.removeItem(FB_CONFIG_STORE);
+        $('#fbApiKey').value = '';
+        $('#fbProjectId').value = '';
+        $('#fbAppId').value = '';
+        $('#fbAuthDomain').value = '';
+        updateFirebaseUiStatus();
+        $('#fbSetupStatus').textContent = 'تم إلغاء الربط السحابي.';
+      });
+
+      $('#syncToFirebaseBtn').addEventListener('click', async () => {
+        if (!isOwner) return;
+        if (!fbConfig || !fbConfig.apiKey || !fbConfig.projectId) {
+          alert('يرجى ضبط إعدادات Firebase أولاً من زر «إعداد الربط السحابي».');
+          return;
+        }
+        try {
+          await syncAllArticlesCloud();
+          alert('تمت مزامنة جميع المقالات مع السحابة بنجاح.');
+        } catch (err) {
+          alert('تعذر إتمام المزامنة. تأكد من تفعيل Firestore في مشروع Firebase ومن قواعد الوصول.');
+        }
+      });
+
+      // الكشف التلقائي عن كود HTML الكامل حتى لو لم يضغط المستخدم الخيار يدوياً
+      const looksLikeHtmlDocument = (str) => {
+        const t = String(str || '').trim();
+        return /<!doctype\s+html/i.test(t) || /<html[\s>]/i.test(t) || (/<(body|head|style|svg|section|div|article|main)[\s>]/i.test(t) && /<\/[a-zA-Z0-9]+\s*>/i.test(t));
+      };
+
+      const isHtmlArticle = (art) => Boolean(art && (art.isHtml || looksLikeHtmlDocument(art.content)));
+
+      // تحديث فتح المقال لدعم عرض صفحات HTML كاملة في مساحة واسعة وملء الشاشة
+      const readModalCard = readModal.querySelector('.modal-card');
+      const toggleHtmlExpandBtn = $('#toggleHtmlExpandBtn');
+
+      toggleHtmlExpandBtn.addEventListener('click', () => {
+        const full = readModalCard.classList.toggle('html-fullscreen');
+        toggleHtmlExpandBtn.textContent = full ? 'تصغير الإطار' : 'ملء الشاشة';
+      });
+
+      const origOpenReadModal = openReadModal;
+      openReadModal = function(art) {
+        readModalCard.classList.remove('html-wide', 'html-fullscreen');
+        toggleHtmlExpandBtn.style.display = 'none';
+        toggleHtmlExpandBtn.textContent = 'ملء الشاشة';
+
+        if (isHtmlArticle(art)) {
+          incrementView(art);
+          readTitle.textContent = art.title;
+          readModalCard.classList.add('html-wide');
+          toggleHtmlExpandBtn.style.display = 'inline-flex';
+
+          const rawHtml = String(art.content || '');
+          const docHtml = /<html[\s>]/i.test(rawHtml) || /<!doctype\s+html/i.test(rawHtml)
+            ? rawHtml
+            : `<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;padding:20px;font-family:"Alexandria","IBM Plex Sans Arabic",Tahoma,sans-serif;line-height:1.9;background:#0f141c;color:#eef2f7;}</style></head><body>${rawHtml}</body></html>`;
+
+          readContent.innerHTML = `
+            <p class="article-meta" style="margin-bottom:10px;">${safe(art.category)} · ${safe(art.subcategory)} · ${safe(art.date || '')} · 👁 ${getViews(art)} قراءة</p>
+            <iframe class="html-article-frame" sandbox="allow-scripts allow-same-origin allow-forms" referrerpolicy="no-referrer"></iframe>
+            ${art.url ? `<p style="margin-top:12px;"><a class="btn" href="${safe(art.url)}" target="_blank" rel="noopener noreferrer">فتح المادة المرفقة ↗</a></p>` : ''}
+          `;
+          const frame = readContent.querySelector('iframe.html-article-frame');
+          if (frame) frame.srcdoc = docHtml;
+          readModal.classList.add('show');
+          return;
+        }
+
+        origOpenReadModal(art);
+      };
+
+      // تحديث حفظ وتعديل وحذف المقال ليرسل للسحابة فوراً عند تفعيل Firebase
+      const articleFormEl = $('#articleForm');
+      const newArticleSubmitHandler = async e => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (!isOwner) return;
+        const id = $('#editId').value || ('art-' + Date.now());
+        const existing = articles.find(a => a.id === id);
+        const rawContent = $('#content').value;
+        const isHtmlFlag = $('#isHtmlContent').checked || looksLikeHtmlDocument(rawContent);
+        const item = {
+          id,
+          title: $('#title').value.trim(),
+          category: $('#category').value,
+          subcategory: $('#subcategory').value,
+          excerpt: $('#excerpt').value.trim(),
+          content: isHtmlFlag ? rawContent : rawContent.trim(),
+          isHtml: isHtmlFlag,
+          url: $('#url').value.trim(),
+          date: existing?.date || new Date().toISOString().slice(0, 10),
+          views: existing ? getViews(existing) : 0,
+          mindmapText: $('#mindmapEnabled').checked ? $('#mindmapText').value.trim() : '',
+          flashText: $('#flashEnabled').checked ? $('#flashText').value.trim() : '',
+          quizText: $('#quizEnabled').checked ? $('#quizText').value.trim() : ''
+        };
+        if (existing) articles = articles.map(a => a.id === id ? item : a);
+        else articles.unshift(item);
+        saveArticles();
+        renderArticles();
+        resetForm();
+
+        if (fbConfig && fbConfig.apiKey && fbConfig.projectId) {
+          try {
+            await upsertArticleCloud(item);
+            alert('تم حفظ المقال ونشره مباشرة للزوار عبر السحابة.');
+            return;
+          } catch (err) {
+            alert('تم الحفظ محلياً في المتصفح، لكن تعذر الرفع السحابي الفوري. يمكنك الضغط على «مزامنة جميع المقالات للسحابة الآن» أو تصدير articles.json.');
+            return;
+          }
+        }
+        alert('تم حفظ المقال محلياً. فعّل الربط السحابي (Firebase) ليظهر مباشرة لجميع الزوار، أو اضغط «تصدير articles.json».');
+      };
+
+      // Replace previous submit listener cleanly by cloning form
+      const cleanForm = articleFormEl.cloneNode(true);
+      articleFormEl.parentNode.replaceChild(cleanForm, articleFormEl);
+      cleanForm.addEventListener('submit', newArticleSubmitHandler);
+      $('#resetForm').addEventListener('click', resetForm);
+
+      document.addEventListener('click', async e => {
+        const editBtn = e.target.closest('[data-edit]');
+        if (editBtn) {
+          if (!isOwner) return;
+          const art = articles.find(a => a.id === editBtn.dataset.edit);
+          if (!art) return;
+          $('#editId').value = art.id;
+          $('#title').value = art.title;
+          $('#category').value = art.category;
+          $('#subcategory').value = art.subcategory;
+          $('#excerpt').value = art.excerpt;
+          $('#content').value = art.content || '';
+          $('#isHtmlContent').checked = isHtmlArticle(art);
+          $('#url').value = art.url || '';
+          $('#mindmapEnabled').checked = !!art.mindmapText;
+          $('#mindmapText').value = art.mindmapText || '';
+          $('#flashEnabled').checked = !!art.flashText;
+          $('#flashText').value = art.flashText || '';
+          $('#quizEnabled').checked = !!art.quizText;
+          $('#quizText').value = art.quizText || '';
+          $('#title').focus();
+          return;
+        }
+        const delBtn = e.target.closest('[data-del]');
+        if (delBtn) {
+          if (!isOwner) return;
+          const targetId = delBtn.dataset.del;
+          if (confirm('حذف هذا المقال؟')) {
+            articles = articles.filter(a => a.id !== targetId);
+            saveArticles();
+            renderArticles();
+            if (fbConfig && fbConfig.apiKey && fbConfig.projectId) {
+              try {
+                await deleteArticleCloud(targetId);
+              } catch (err) {}
+            }
+          }
+        }
+      }, true);
+
+      const origLoadPublicArticles = loadPublicArticles;
+      loadPublicArticles = async function() {
+        updateFirebaseUiStatus();
+        const connected = await subscribeCloudArticles();
+        if (!connected) {
+          await origLoadPublicArticles();
+        }
+      };
 
       loadPublicArticles();
     })();
